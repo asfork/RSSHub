@@ -22703,6 +22703,19 @@
       }
     ]
   },
+  "konghq.com": {
+    "_name": "Kong API 网关平台",
+    ".": [
+      {
+        "title": "博客最新文章",
+        "docs": "https://docs.rsshub.app/routes/programming#kong-api-wang-guan-ping-tai-bo-ke-zui-xin-wen-zhang",
+        "source": [
+          "/blog/*"
+        ],
+        "target": "/konghq/blog-posts"
+      }
+    ]
+  },
   "kuaidi100.com": {
     "_name": "快递 100",
     ".": [
@@ -25934,9 +25947,9 @@
         "title": "新华社新闻",
         "docs": "https://docs.rsshub.app/routes/new-media#xin-hua-wang-xin-hua-she-xin-wen",
         "source": [
-          "/"
+          "/xhsxw.htm"
         ],
-        "target": "/news/whxw"
+        "target": "/news/xhsxw"
       }
     ]
   },
@@ -32327,6 +32340,19 @@
       }
     ]
   },
+  "tass.com": {
+    "_name": "Russian News Agency TASS",
+    ".": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/traditional-media.html#russian-news-agency-tass",
+        "source": [
+          "/:category"
+        ],
+        "target": "/tass/:category"
+      }
+    ]
+  },
   "techcrunch.com": {
     "_name": "TechCrunch",
     ".": [
@@ -33671,6 +33697,12 @@
         "docs": "https://docs.rsshub.app/routes/social-media#wei-bo",
         "source": "/p/:id/super_index",
         "target": "/weibo/super_index/:id"
+      },
+      {
+        "title": "最新关注时间线",
+        "docs": "https://docs.rsshub.app/routes/social-media#wei-bo",
+        "source": "/",
+        "target": "/weibo/friends"
       }
     ],
     "s": [
