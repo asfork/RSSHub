@@ -1332,6 +1332,44 @@
       }
     ]
   },
+  "4gamers.com.tw": {
+    "_name": "4Gamers",
+    "www": [
+      {
+        "title": "最新消息",
+        "docs": "https://docs.rsshub.app/routes/game#4gamers",
+        "source": [
+          "/news",
+          "/"
+        ],
+        "target": "/4gamers"
+      },
+      {
+        "title": "分类",
+        "docs": "https://docs.rsshub.app/routes/game#4gamers",
+        "source": [
+          "/news/category/:category/:categoryName"
+        ],
+        "target": "/4gamers/category/:category"
+      },
+      {
+        "title": "标签",
+        "docs": "https://docs.rsshub.app/routes/game#4gamers",
+        "source": [
+          "/news/tag/:tag"
+        ],
+        "target": "/4gamers/tag/:tag"
+      },
+      {
+        "title": "主題",
+        "docs": "https://docs.rsshub.app/routes/game#4gamers",
+        "source": [
+          "/news/option-cfg/:topic"
+        ],
+        "target": "/4gamers/topic/:topic"
+      }
+    ]
+  },
   "4ksj.com": {
     "_name": "4k 世界",
     ".": [
@@ -4132,6 +4170,19 @@
         "source": [
           "/*"
         ]
+      }
+    ]
+  },
+  "bulianglin.com": {
+    "_name": "不良林",
+    ".": [
+      {
+        "title": "博客",
+        "docs": "https://docs.rsshub.app/routes/blog#bu-liang-lin",
+        "source": [
+          "/"
+        ],
+        "target": "/bulianglin"
       }
     ]
   },
@@ -7947,13 +7998,12 @@
     ],
     "www.genetics": [
       {
-        "title": "遗传与生物学研究所 - 学术活动",
+        "title": "遗传与发育生物学研究所",
         "docs": "https://docs.rsshub.app/routes/university#zhong-guo-ke-xue-yuan",
         "source": [
-          "/jixs/yg",
-          "/"
+          "/*path"
         ],
-        "target": "/cas/genetics/xshd"
+        "target": "/cas/genetics/*path"
       }
     ],
     "www.ia": [
@@ -30973,6 +31023,19 @@
           "/:type"
         ],
         "target": "/shmtu/www/:type"
+      }
+    ]
+  },
+  "shoac.com.cn": {
+    "_name": "上海东方艺术中心",
+    ".": [
+      {
+        "title": "演出月历",
+        "docs": "https://docs.rsshub.app/routes/shopping#shang-hai-dong-fang-yi-shu-zhong-xin",
+        "source": [
+          "/"
+        ],
+        "target": "/shoac/recent-show"
       }
     ]
   },
