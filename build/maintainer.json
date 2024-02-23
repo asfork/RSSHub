@@ -187,6 +187,12 @@
     "/52hrtt/symposium/:id?/:classId?": [
         "nczitzk"
     ],
+    "/56kog/class/:category?": [
+        "nczitzk"
+    ],
+    "/56kog/top/:category?": [
+        "nczitzk"
+    ],
     "/591/:country/rent/:query?": [
         "Yukaii"
     ],
@@ -3216,6 +3222,9 @@
     "/hfut/tzgg": [],
     "/hhu/libNews": [],
     "/hhu/libNewsc": [],
+    "/hicairo": [
+        "cnkmmk"
+    ],
     "/hinatazaka46/blog/:id?": [
         "nwindz",
         "akashigakki"
@@ -3982,6 +3991,21 @@
     "/jpmorganchase": [],
     "/jseea/news/:type?": [
         "schen1024"
+    ],
+    "/jsu/cxzx/:types?": [
+        "wenjia03"
+    ],
+    "/jsu/jwc/:types?": [
+        "wenjia03"
+    ],
+    "/jsu/notice": [
+        "wenjia03"
+    ],
+    "/jsu/rjxy": [
+        "wenjia03"
+    ],
+    "/jsu/stxy": [
+        "wenjia03"
     ],
     "/ju/jwc/:type?": [],
     "/juejin/books": [
