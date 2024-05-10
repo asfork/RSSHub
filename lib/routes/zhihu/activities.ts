@@ -1,11 +1,36 @@
+import { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
+import ofetch from '@/utils/ofetch';
 import utils from './utils';
 import { parseDate } from '@/utils/parse-date';
 import g_encrypt from './execlib/x-zse-96-v3';
 import md5 from '@/utils/md5';
 
-export default async (ctx) => {
+export const route: Route = {
+    path: '/people/activities/:id',
+    categories: ['social-media'],
+    example: '/zhihu/people/activities/diygod',
+    parameters: { id: '作者 id，可在用户主页 URL 中找到' },
+    features: {
+        requireConfig: false,
+        requirePuppeteer: false,
+        antiCrawler: true,
+        supportBT: false,
+        supportPodcast: false,
+        supportScihub: false,
+    },
+    radar: [
+        {
+            source: ['www.zhihu.com/people/:id'],
+        },
+    ],
+    name: '用户动态',
+    maintainers: ['DIYgod'],
+    handler,
+};
+
+async function handler(ctx) {
     const id = ctx.req.param('id');
 
     // Because the API of zhihu.com has changed, we must use the value of `d_c0` (extracted from cookies) to calculate
@@ -14,15 +39,15 @@ export default async (ctx) => {
 
     // fisrt: get cookie(dc_0) from zhihu.com
     const cookie_mes = await cache.tryGet('zhihu:cookies:d_c0', async () => {
-        const response = await got(`https://www.zhihu.com/people/${id}`, {
+        const response = await ofetch.raw(`https://www.zhihu.com/people/${id}`, {
             headers: {
                 ...utils.header,
             },
         });
 
-        const cookie_org = response.headers['set-cookie'];
-        const cookie = cookie_org.toString();
-        const match = cookie.match(/d_c0=(\S+?)(?:;|$)/);
+        const cookie_org = response.headers.get('set-cookie');
+        const cookie = cookie_org?.toString();
+        const match = cookie?.match(/d_c0=(\S+?)(?:;|$)/);
         const cookie_mes = match && match[1];
         if (!cookie_mes) {
             throw new Error('Failed to extract `d_c0` from cookies');
@@ -50,7 +75,7 @@ export default async (ctx) => {
 
     const data = response.data.data;
 
-    ctx.set('data', {
+    return {
         title: `${data[0].actor.name}的知乎动态`,
         link: `https://www.zhihu.com/people/${id}/activities`,
         image: data[0].actor.avatar_url,
@@ -154,5 +179,5 @@ export default async (ctx) => {
                 link: url,
             };
         }),
-    });
-};
+    };
+}
