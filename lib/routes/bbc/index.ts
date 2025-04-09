@@ -4,11 +4,10 @@ import parser from '@/utils/rss-parser';
 import { load } from 'cheerio';
 import utils from './utils';
 import ofetch from '@/utils/ofetch';
-
 export const route: Route = {
     path: '/:site?/:channel?',
     name: 'News',
-    maintainers: ['HenryQW', 'DIYgod'],
+    maintainers: ['HenryQW', 'DIYgod', 'pseudoyu'],
     handler,
     example: '/bbc/world-asia',
     parameters: {
@@ -59,38 +58,51 @@ async function handler(ctx) {
     }
 
     const items = await Promise.all(
-        feed.items.map((item) =>
-            cache.tryGet(item.link, async () => {
-                const response = await ofetch(item.link);
+        feed.items
+            .filter((item) => item && item.link)
+            .map((item) =>
+                cache.tryGet(item.link, async () => {
+                    try {
+                        const linkURL = new URL(item.link);
+                        if (linkURL.hostname === 'www.bbc.com') {
+                            linkURL.hostname = 'www.bbc.co.uk';
+                        }
 
-                const $ = load(response);
+                        const response = await ofetch(linkURL.href, {
+                            retryStatusCodes: [403],
+                        });
 
-                const path = new URL(item.link).pathname;
+                        const $ = load(response);
 
-                let description;
+                        const path = linkURL.pathname;
 
-                switch (true) {
-                    case path.startsWith('/sport'):
-                        description = item.content;
-                        break;
-                    case path.startsWith('/sounds/play'):
-                        description = item.content;
-                        break;
-                    case path.startsWith('/news/live'):
-                        description = item.content;
-                        break;
-                    default:
-                        description = utils.ProcessFeed($);
-                }
+                        let description;
 
-                return {
-                    title: item.title,
-                    description,
-                    pubDate: item.pubDate,
-                    link: item.link,
-                };
-            })
-        )
+                        switch (true) {
+                            case path.startsWith('/sport'):
+                                description = item.content;
+                                break;
+                            case path.startsWith('/sounds/play'):
+                                description = item.content;
+                                break;
+                            case path.startsWith('/news/live'):
+                                description = item.content;
+                                break;
+                            default:
+                                description = utils.ProcessFeed($);
+                        }
+
+                        return {
+                            title: item.title || '',
+                            description: description || '',
+                            pubDate: item.pubDate || new Date().toUTCString(),
+                            link: item.link,
+                        };
+                    } catch {
+                        return {} as Record<string, any>;
+                    }
+                })
+            )
     );
 
     return {
@@ -98,6 +110,6 @@ async function handler(ctx) {
         link,
         image: 'https://www.bbc.com/favicon.ico',
         description: title,
-        item: items,
+        item: items.filter((item) => Object.keys(item).length > 0),
     };
 }

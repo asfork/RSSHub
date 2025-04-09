@@ -10,7 +10,7 @@ export const route: Route = {
     features: {
         requireConfig: [
             {
-                name: 'TWITTER_COOKIE',
+                name: 'TWITTER_AUTH_TOKEN',
                 description: 'Please see above for details.',
             },
         ],
@@ -27,7 +27,7 @@ export const route: Route = {
 
 async function handler(ctx) {
     const id = ctx.req.param('id');
-    const { count, include_rts } = utils.parseRouteParams(ctx.req.param('routeParams'));
+    const { count, include_rts, only_media } = utils.parseRouteParams(ctx.req.param('routeParams'));
     const params = count ? { count } : {};
 
     await api.init();
@@ -35,10 +35,13 @@ async function handler(ctx) {
     if (!include_rts) {
         data = utils.excludeRetweet(data);
     }
+    if (only_media) {
+        data = utils.keepOnlyMedia(data);
+    }
 
     return {
         title: `Twitter Likes - ${id}`,
-        link: `https://twitter.com/${id}/likes`,
+        link: `https://x.com/${id}/likes`,
         item: utils.ProcessFeed(ctx, {
             data,
         }),

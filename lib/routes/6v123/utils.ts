@@ -19,16 +19,16 @@ export async function loadDetailPage(link) {
             .replaceAll(/，免费下载，迅雷下载|，6v电影/g, ''),
         description: $('meta[name="description"]').attr('content'),
         enclosure_urls: $('table td')
-            .map((i, e) => ({
+            .toArray()
+            .map((e) => ({
                 title: $(e).text().replace('磁力：', ''),
                 magnet: $(e).find('a').attr('href'),
             }))
-            .toArray()
             .filter((item) => item.magnet?.includes('magnet')),
     };
 }
 
-export async function processItems(ctx, baseURL) {
+export async function processItems(ctx, baseURL, exclude) {
     const response = await got.get(baseURL, {
         responseType: 'buffer',
     });
@@ -42,8 +42,14 @@ export async function processItems(ctx, baseURL) {
             const link = $(item).find('a');
             const href = link.attr('href');
             const pubDate = timezone(parseDate($(item).find('span').text().replaceAll(/[[\]]/g, ''), 'MM-DD'), +8);
+            const text = link.text();
 
             if (href === undefined) {
+                return;
+            }
+
+            if (exclude && exclude.some((e) => e.test(text))) {
+                // 过滤掉满足正则的标题条目
                 return;
             }
 
